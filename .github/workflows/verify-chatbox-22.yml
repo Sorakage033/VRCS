@@ -1,0 +1,18 @@
+name: Verify Chatbox issue 22
+on:
+  push:
+    branches: [codex/verify-chatbox-22]
+permissions:
+  contents: read
+jobs:
+  chatbox:
+    runs-on: windows-2022
+    timeout-minutes: 55
+    env:
+      CMAKE_GENERATOR: Visual Studio 17 2022
+      CARGO_PROFILE_TEST_DEBUG: 0
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup show
+      - run: cargo test --locked -p vrcs-core --lib chatbox -- --nocapture
+      - run: cargo fmt --all -- --check
